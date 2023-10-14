@@ -15,6 +15,8 @@ namespace SchoolManagement
             Diciplinas = new List<Disciplina>();
         }
 
+        // Essa classe também não é muito utilizada, talvez seja interessante colocar alguns recursos aqui que estão em gerenciar escola.
+
         public void AlocarDisciplina(Disciplina disciplina)
         {
             if (!Diciplinas.Contains(disciplina))
