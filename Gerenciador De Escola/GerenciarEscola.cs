@@ -8,8 +8,8 @@ namespace Gerenciador_De_Escola
         Essa é uma classe centralizadora Para gerenciar os métodos e classes desse sistema.
         Porém, talvez ela tenha ficado muito grande e com muitas responsabilidades.
         Não sei o que você acha, mas talvez seja interessante a gente tentar descentralizar um pouco mais. Ou talvez desmembrar alguns métodos.
-        Alguns recursos de validação em alguns métodos abaixo, porem talvez seja interessante a gente levar para alguma outra classe.
-        Também pode ter alguns métodos que não estejam associados a outros. Um exemplo, é quando listamos os cursos que não aparece nenhuma disciplina associada.
+        Alguns recursos de validação foram implementados, apenas para exemplo. Porem, talvez seja interessante a gente criar uma classe para tratar exceções, etc.
+        Também pode ter alguns métodos que não estejam associados a outros. Um exemplo, é quando listamos os cursos e não aparece nenhuma disciplina associada.
          Alguns métodos e classes foram implementados. Alguns funcionam bem outros nem tanto, pois não foram muito testados.
 
      */
