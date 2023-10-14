@@ -1,28 +1,37 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Gerenciador_De_Escola
+namespace SchoolManagement
 {
-    internal class Professor : Pessoa
+
+    public class Professor : Pessoa
     {
-        public int Matricula { get; set; }
-        public List<Disciplina> Disciplinas { get; set;}
 
-        public Professor()
+        public List<Disciplina> Diciplinas { get; set; }
+
+
+        public Professor(string nome, int idade) : base(nome, idade)
         {
-
+            Diciplinas = new List<Disciplina>();
         }
 
-        public void AdicionarDisciplina(Disciplina disciplina) {
-        
-        }
-
-        public List<Disciplina> ListarDisciplinas()
+        public void AlocarDisciplina(Disciplina disciplina)
         {
-            return Disciplinas;
+            if (!Diciplinas.Contains(disciplina))
+            {
+                Diciplinas.Add(disciplina);
+            }
+            else
+            {
+                Console.WriteLine("Disciplina já alocada para este professor");
+            }
         }
+
+        public override void ExibirDados()
+        {
+            base.ExibirDados();
+            //Console.WriteLine($"Disciplinas: {string.Join(", ", Diciplinas)}");
+        }
+
     }
 }
