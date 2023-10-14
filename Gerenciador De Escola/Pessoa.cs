@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace SchoolManagement
+namespace Gerenciador_De_Escola
 {
 
     public class Pessoa
