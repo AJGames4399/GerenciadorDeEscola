@@ -1,31 +1,26 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Gerenciador_De_Escola
+namespace SchoolManagement
 {
-    internal class Pessoa
+
+    public class Pessoa
     {
         public string Nome { get; set; }
-        public DateTime DataNascimento { get; set; }
+       // public DateTime DataNascimento { get; set; }
         public int Idade { get; set; }
-        public List<Curso> Curso { get; set; }
 
-        public Pessoa()
+        public Pessoa(string nome, int idade)
         {
-
+            Nome = nome;
+            Idade = idade;
         }
 
-        public void AdicionarCurso(Curso curso)
+        public virtual void ExibirDados()
         {
-
+            Console.WriteLine($"Nome: {Nome} - Idade: {Idade}");
         }
 
-        public List<Curso> ListarCursos()
-        {
-            return Curso;
-        }
     }
 }
+
