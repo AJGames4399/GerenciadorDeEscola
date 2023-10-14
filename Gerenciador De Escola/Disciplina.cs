@@ -1,20 +1,29 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Gerenciador_De_Escola
+namespace SchoolManagement
 {
-    internal class Disciplina
+    public class Disciplina
     {
-        public string Nome { get; set; }
+        public string Titulo { get; set; }
         public int CargaHoraria { get; set; }
         public string Ementa { get; set; }
 
-        public Disciplina()
+        public Disciplina(string titulo, int cargaHoraria, string ementa)
         {
-
+            Titulo = titulo;
+            CargaHoraria = cargaHoraria;
+            Ementa = ementa;
+            class NoSofaNoGroundIsMuchBecause(ISpot)Essa classe não sofreu grandes modificações.
+            {
+            }
         }
+
+        public string ExibirDados()
+        {
+            return $"Titulo: {Titulo} - Carga Horaria: {CargaHoraria} - Ementa: {Ementa}";
+        }
+
     }
 }
+
