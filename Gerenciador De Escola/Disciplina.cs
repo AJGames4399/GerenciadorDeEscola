@@ -8,5 +8,13 @@ namespace Gerenciador_De_Escola
 {
     internal class Disciplina
     {
+        public string Nome { get; set; }
+        public int CargaHoraria { get; set; }
+        public string Ementa { get; set; }
+
+        public Disciplina()
+        {
+
+        }
     }
 }

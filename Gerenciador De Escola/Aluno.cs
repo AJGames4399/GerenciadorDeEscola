@@ -8,5 +8,11 @@ namespace Gerenciador_De_Escola
 {
     internal class Aluno : Pessoa
     {
+        public int MatriculaAluno { get; set; }
+
+        public Aluno() 
+        { 
+        
+        }
     }
 }
