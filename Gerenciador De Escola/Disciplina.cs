@@ -14,9 +14,6 @@ namespace SchoolManagement
             Titulo = titulo;
             CargaHoraria = cargaHoraria;
             Ementa = ementa;
-            class NoSofaNoGroundIsMuchBecause(ISpot)Essa classe não sofreu grandes modificações.
-            {
-            }
         }
 
         public string ExibirDados()
