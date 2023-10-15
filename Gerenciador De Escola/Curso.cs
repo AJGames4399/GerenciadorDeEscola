@@ -6,17 +6,15 @@ namespace Gerenciador_De_Escola
 
     public class Curso
     {
-        public string Nome { get; set; }
-        // public int CargaHoraria { get; set; }
-
         public int CodigoCurso { get; set; }
+        public string Nome { get; set; }
         public List<Aluno> Alunos { get; set; }
         public List<Disciplina> Disciplinas { get; set; }
 
-        public Curso(string nome, int codigoCurso)
+        public Curso(string nome)
         {
+            CodigoCurso = new Random().Next(1,999);
             Nome = nome;
-
             Alunos = new List<Aluno>();
             Disciplinas = new List<Disciplina>();
         }
@@ -36,23 +34,44 @@ namespace Gerenciador_De_Escola
         /*
 
         Essa classe não foi muito utilizada em alguns recursos que estão na classe gerenciar escola, talvez possam ser incorporados aqui.
+        Respostas: Classes foram retiradas do GerenciadorEscoal e colocadas aqui
+
+        */
 
         public void AdicionarDisciplina(Disciplina disciplina)
         {
+            if (!Disciplinas.Contains(disciplina))
+            {
+                Disciplinas.Add(disciplina);
+            }
+            else
+            {
+                Console.WriteLine("Disciplina já alocada para este curso");
+            }
 
         }
 
-        public List<Aluno> ListarAlunos()
+        public string ListarAlunos()
         {
-            return Alunos;
+            string sMensagem = "Lista de Alunos:\n";
+            foreach (var aluno in Alunos)
+            {
+                sMensagem += aluno.ExibirDados() + "\n";
+            }
+            return sMensagem;
         }
 
-        public List<Disciplina> ListarDisciplinas()
+        public string ListarDisciplinas()
         {
-            return Disciplinas;
+            string sMensagem = "Lista de Disciplinas:";
+            foreach (var disciplina in Disciplinas)
+            {
+                sMensagem += "\nTitulo: " + disciplina.Titulo;
+                sMensagem += "\nCarga Horaria: " + disciplina.CargaHoraria;
+                sMensagem += "\nEmenta: " + disciplina.Ementa;
+            }
+            return sMensagem;
         }
-
-*/
 
 
 

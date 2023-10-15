@@ -6,19 +6,27 @@ namespace Gerenciador_De_Escola
 
     public class Pessoa
     {
-        public string Nome { get; set; }
-       // public DateTime DataNascimento { get; set; }
-        public int Idade { get; set; }
+        public string Nome { get; private set; }
+        public DateTime DataNascimento { get; private set; }
+        public int Idade { get; private set; }
+        public List<Curso> Cursos { get; private set; }
 
-        public Pessoa(string nome, int idade)
+
+        public Pessoa(string nome, DateTime dataNascimento)
         {
             Nome = nome;
-            Idade = idade;
+            DataNascimento = dataNascimento;
+            Idade = DateTime.Today.Year - dataNascimento.Year;
+            Cursos = new List<Curso>();
+
         }
 
-        public virtual void ExibirDados()
+        public virtual string ExibirDados()
         {
-            Console.WriteLine($"Nome: {Nome} - Idade: {Idade}");
+            string sMensagem = Nome + " ";
+            sMensagem += DataNascimento + " ";
+            sMensagem += Idade;
+            return sMensagem;
         }
 
     }
