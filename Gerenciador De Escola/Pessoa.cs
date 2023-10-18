@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 
 namespace Gerenciador_De_Escola
 {
@@ -23,10 +24,7 @@ namespace Gerenciador_De_Escola
 
         public virtual string ExibirDados()
         {
-            string sMensagem = Nome + " ";
-            sMensagem += DataNascimento + " ";
-            sMensagem += Idade;
-            return sMensagem;
+            return Nome + ", "+DateOnly.FromDateTime(DataNascimento) + " ("+Idade+" Anos)";
         }
 
     }
