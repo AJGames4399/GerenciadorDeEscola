@@ -5,20 +5,22 @@ namespace Gerenciador_De_Escola
 {
     public class Disciplina
     {
-        public string Titulo { get; set; }
+        public int CodigoDisciplina { get; set;}
+        public string Nome { get; set; }
         public int CargaHoraria { get; set; }
         public string Ementa { get; set; }
 
-        public Disciplina(string titulo, int cargaHoraria, string ementa)
+        public Disciplina(int codigo, string titulo, int cargaHoraria, string ementa)
         {
-            Titulo = titulo;
+            CodigoDisciplina = CodigoDisciplina;
+            Nome = titulo;
             CargaHoraria = cargaHoraria;
             Ementa = ementa;
         }
 
         public string ExibirDados()
         {
-            return $"Titulo: {Titulo} - Carga Horaria: {CargaHoraria} - Ementa: {Ementa}";
+            return CodigoDisciplina+": "+ Nome + ", Carga Horaria: "+ CargaHoraria + "\nEmenta: "+ Ementa;
         }
 
     }

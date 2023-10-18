@@ -1,23 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Reflection.Emit;
 
 namespace Gerenciador_De_Escola
 {
-
-    /*
-        Essa é uma classe centralizadora Para gerenciar os métodos e classes desse sistema.
-        Porém, talvez ela tenha ficado muito grande e com muitas responsabilidades.
-        Não sei o que você acha, mas talvez seja interessante a gente tentar descentralizar um pouco mais. Ou talvez desmembrar alguns métodos.
-        Alguns recursos de validação foram implementados, apenas para exemplo. Porem, talvez seja interessante a gente criar uma classe para tratar exceções, etc.
-        Também pode ter alguns métodos que não estejam associados a outros. Um exemplo, é quando listamos os cursos e não aparece nenhuma disciplina associada.
-         Alguns métodos e classes foram implementados. Alguns funcionam bem outros nem tanto, pois não foram muito testados.
-
-        Muitas classes daqui, precisam ficar nos objetos, mas pode servir como ponte pra conversar entre os metodos e tbm para gerar as mensagens a serem apresentadas na tela,
-        por hora deixei comentado enquanto revisamos e organizamos os objetos, deixemos esta classe para quando todos os objetos estiverem prontos
-
-     */
-
     public class GerenciarEscola
     {
         private List<Aluno> Alunos;
@@ -53,11 +40,22 @@ namespace Gerenciador_De_Escola
             Console.WriteLine("\nNome Completo: __________________________________________");
             Console.WriteLine("\nData Nascimento: _________  (DD/MM/AAAA)");
             Console.WriteLine("\nIdade: ");
-            labelNovoCadastro:
+        labelNovoCadastro:
             Console.SetCursorPosition(15, 6);
             sNome = Console.ReadLine();
-            Console.SetCursorPosition(17, 8);
-            dataNascimento = DateTime.ParseExact(Console.ReadLine(), "dd/MM/yyyy", CultureInfo.InvariantCulture);
+        LabelErroData:
+            Console.SetCursorPosition(17, 8); 
+            try
+            {
+                dataNascimento = DateTime.ParseExact(Console.ReadLine(), "dd/MM/yyyy", CultureInfo.InvariantCulture);
+            }
+            catch (Exception ex)
+            {
+                Console.SetCursorPosition(17, 8);
+                Console.WriteLine("_________  (DD/MM/AAAA)");
+                goto LabelErroData;
+            }
+            
             Console.SetCursorPosition(7, 10);
             if(dataNascimento.Day >= DateTime.Today.Day && dataNascimento.Month >= DateTime.Today.Month)
             {
@@ -75,11 +73,11 @@ namespace Gerenciador_De_Escola
             {
                 if(Tipo == 'A')
                 {
-                    Alunos.Add(new Aluno(sNome, dataNascimento));
+                    Alunos.Add(new Aluno(iMatricula, sNome, dataNascimento));
                 }
                 else
                 {
-                    Professores.Add(new Professor(sNome, dataNascimento));
+                    Professores.Add(new Professor(iMatricula, sNome, dataNascimento));
                 }
             }
             else if (cOpcao == 'N')
@@ -106,168 +104,277 @@ namespace Gerenciador_De_Escola
             return "Cadastrado Com Sucesso!";
         }
 
+        public string CadastrarCurso()
+        {
+            int iCodigoCurso = Cursos.Count;
+            string sNome = "";
+            char cOpcao = ' ';
+            Console.WriteLine("\nCadastrar Novo Curso");
+            Console.Write("\n\nCodigo Do Curso: "+iCodigoCurso);
+            Console.WriteLine("\nNome Do Curso: ___________________________________________________");
+        labelNovoCadastro:
+            Console.SetCursorPosition(15,5);
+            sNome = Console.ReadLine();
+            Console.WriteLine("\n\nConfirma: \nS - Sim\nN - Não\nC - Cancelar");
+        labelConfirmaOpcao:
+            Console.SetCursorPosition(10, 9);
+            cOpcao = char.ToUpper(Console.ReadKey().KeyChar);
+            if (cOpcao == 'S')
+            {
+                Cursos.Add(new Curso(iCodigoCurso, sNome));
+            }
+            else if (cOpcao == 'N')
+            {
+                Console.SetCursorPosition(14,6);
+                Console.WriteLine("___________________________________________________");
+                goto labelNovoCadastro;
+            }
+            else if (cOpcao == 'C')
+            {
+                return "Cadastro Cancelado";
+            }
+            else
+            {
+                Console.SetCursorPosition(13, 9);
+                Console.WriteLine("<Opcao Invalida>");
+                goto labelConfirmaOpcao;
+            }
 
-        //public GerenciarEscola()
-        //{
-        //    Alunos = new List<Aluno>();
-        //    Professores = new List<Professor>();
-        //    Disciplinas = new List<Disciplina>();
-        //    Cursos = new List<Curso>();
-        //}
+            return "Curso Cadastrado Com Sucesso!";
+        }
 
-        //public void CadastrarAluno(string nome, int idade, int matricula)
-        //{
+        public string CadastrarDisciplina(){
+            string sNome = "";
+            string sEmenta = "";
+            int iCargaHoraria = 0;
+            int iCodigoDisciplina = Disciplinas.Count;
+            char cOpcao = ' ';
 
-        //    Aluno aluno = new Aluno();
-        //    Alunos.Add(Aluno);
+            Console.WriteLine("\nCadastrar Nova disciplina");
+            Console.WriteLine("\n\nCodigo Da Disciplina: "+iCodigoDisciplina);
+            Console.WriteLine("\nNome Da Disciplina: ");
+            Console.WriteLine("\nCarga Horaria: ");
+            Console.WriteLine("\nEmenta:\n ___________________________________________________________________________________________________");
+        labelNovoCadastro:
+            Console.SetCursorPosition(20,6);
+            sNome = Console.ReadLine();
+            Console.SetCursorPosition(15,8);
+            iCargaHoraria = int.Parse(Console.ReadLine());
+            Console.SetCursorPosition(1,11);
+            sEmenta = Console.ReadLine();
+            Console.WriteLine("\n\nConfirma: \nS - Sim\nN - Não\nC - Cancelar");
+        labelConfirmaOpcao:
+            Console.SetCursorPosition(10, 14);
+            cOpcao = char.ToUpper(Console.ReadKey().KeyChar);
+            if (cOpcao == 'S')
+            {
+                Disciplinas.Add(new Disciplina(iCodigoDisciplina, sNome, iCargaHoraria, sEmenta));
+            }
+            else if (cOpcao == 'N')
+            {
+                Console.SetCursorPosition(1,11);
+                Console.WriteLine("___________________________________________________________________________________________________");
+                goto labelNovoCadastro;
+            }
+            else if (cOpcao == 'C')
+            {
+                return "Cadastro Cancelado";
+            }
+            else
+            {
+                Console.SetCursorPosition(13, 14);
+                Console.WriteLine("<Opcao Invalida>");
+                goto labelConfirmaOpcao;
+            }
+            return "Disciplina Cadastrada Com Sucesso";
+        }
 
-        //}
+        public string Listar(char tipo){
+            string sTipoLista = "";
+            int iNumeroCadastros = 0;
+            switch(tipo){
+                case 'A':
+                    Console.WriteLine("Lista De Alunos Cadastrados\n");
+                    foreach(var aluno in Alunos)
+                    {
+                        Console.WriteLine(aluno.ExibirDados());
+                    }
+                    break;
+                case 'P':
+                    Console.WriteLine("Lista De Professores Cadastrados\n");
+                    foreach(var professor in Professores)
+                    {
+                        Console.WriteLine(professor.ExibirDados());
+                    }
+                    break;
+                case 'C':
+                    Console.WriteLine("Lista De Cursos Cadastrados\n");
+                    foreach(var curso in Cursos)
+                    {
+                        Console.WriteLine(curso.ExibirDados());
+                    }
+                    break;
+                case 'D':
+                    Console.WriteLine("Lista De Disciplinas Cadastradas\n");
+                    foreach(var disciplina in Disciplinas)
+                    {
+                        disciplina.ExibirDados();
+                    }
+                    break;
+                default:
+                    return "Erro";
+                    break;
+            }   
+            Console.WriteLine("\n\n\nPressione quaçquer tecla para sair");
+            Console.ReadKey();
+            return "Voltando...";
+        }
 
-        //public void CadastrarProfessor(string nome, int idade)
-        //{
+        public string Matricular()
+        {
+            char cOpcao = ' ';
+            Aluno AlunoSelecionado;
+            Curso CursoSelecionado;
 
-        //    Professor professor = new Professor(nome, idade);
-        //    Professores.Add(professor);
+            Console.WriteLine("\nMatricular Aluno A Um Curso");
+            Console.WriteLine("Matricula Do Aluno:");
+            Console.WriteLine("Nome:\n\n");
+            Console.WriteLine("Codigo Do Curso:");
+            Console.WriteLine("Nome:");
+        labelNovaMatricula:
+            Console.SetCursorPosition(19,2);
+            try {
+                AlunoSelecionado = Alunos.Find(x => x.MatriculaAluno == int.Parse(Console.ReadLine()));
+            }
+            catch (Exception ex)
+            {
+                goto labelNovaMatricula;
+            }
+            Console.SetCursorPosition(5,3);
+            Console.WriteLine(AlunoSelecionado.Nome);
+            Console.SetCursorPosition(16,6);
+            try {
+                CursoSelecionado = Cursos.Find(x => x.CodigoCurso == int.Parse(Console.ReadLine()));
+            }
+            catch (Exception ex)
+            {
+                goto labelNovaMatricula;
+            }
+            Console.SetCursorPosition(5,7);
+            Console.WriteLine(CursoSelecionado.Nome);
+            Console.WriteLine("\n\nConfirma: \nS - Sim\nN - Não\nC - Cancelar");
+        labelConfirmaOpcao:
+            Console.SetCursorPosition(10, 10);
+            cOpcao = char.ToUpper(Console.ReadKey().KeyChar);
+            if (cOpcao == 'S')
+            {
+                if(!AlunoSelecionado.Cursos.Contains(CursoSelecionado) && !CursoSelecionado.Alunos.Contains(AlunoSelecionado)){
+                    Alunos.Find(x => x.MatriculaAluno == AlunoSelecionado.MatriculaAluno).Matricular(CursoSelecionado);
+                    Cursos.Find(x => x.CodigoCurso == CursoSelecionado.CodigoCurso).AdicionarAluno(AlunoSelecionado);
+                }else{
+                    return "Aluno Ja Matriculado Neste Curso";
+                }
+            }
+            else if (cOpcao == 'N')
+            {
+                Console.SetCursorPosition(19,2);
+                Console.WriteLine("     ");
+                Console.SetCursorPosition(5,3);
+                Console.WriteLine("                                                                           ");
+                Console.SetCursorPosition(16,6);
+                Console.WriteLine("     ");
+                Console.SetCursorPosition(5,7);
+                Console.WriteLine("                                                                           ");
+                goto labelNovaMatricula;
+            }
+            else if (cOpcao == 'C')
+            {
+                return "Matricula Cancelada";
+            }
+            else
+            {
+                Console.SetCursorPosition(13, 10);
+                Console.WriteLine("<Opcao Invalida>");
+                goto labelConfirmaOpcao;
+            }
+            return "Aluno Matriculado com Sucesso";
+        }
 
-        //}
-
-        //public void CadastrarCurso(string nome, int codigoCurso)
-        //{
-
-        //    Curso curso = new Curso(nome, codigoCurso);
-        //    Cursos.Add(curso);
-
-        //}
-
-        //public void CadastrarDisciplina(string titulo, int cargaHoraria, string ementa)
-        //{
-        //    Disciplina disciplina = new Disciplina(titulo, cargaHoraria, ementa);
-        //    Disciplinas.Add(disciplina);
-
-        //}
-
-        //public void MatricularAlunoEmCurso()
-        //{
-        //    int numAluno = 0;
-        //    int numCurso = 0;
-
-        //    if (Alunos.Count == 0)
-        //    {
-        //        Console.WriteLine("Não há alunos cadastrados");
-        //    }
-        //    else
-        //    {
-        //        Console.WriteLine("Alunos disponíveis para matrícula:");
-        //        for (int i = 0; i < Alunos.Count; i++)
-        //        {
-        //            Console.WriteLine($"{i + 1}. {Alunos[i].Nome}");
-        //        }
-
-        //        Console.Write("Selecione o número do aluno: ");
-        //        numAluno = int.Parse(Console.ReadLine()) - 1;
-        //    }
-
-        //    if (Cursos.Count == 0)
-        //    {
-        //        Console.WriteLine("Não há cursos cadastrados");
-        //    }
-        //    else
-        //    {
-        //        Console.WriteLine("Cursos disponíveis para matrícula:");
-        //        for (int i = 0; i < Cursos.Count; i++)
-        //        {
-        //            Console.WriteLine($"{i + 1}. {Cursos[i].Nome}");
-        //        }
-
-        //        Console.Write("Selecione o número do curso: ");
-        //        numCurso = int.Parse(Console.ReadLine()) - 1;
-        //    }
-
-        //    if (Alunos.Count > 0 && Cursos.Count > 0)
-        //    {
-        //        Alunos[numAluno].Matricular(Cursos[numCurso]);
-        //        Console.WriteLine($"Aluno {Alunos[numAluno].Nome} matriculado no curso {Cursos[numCurso].Nome}.");
-        //    }
-
-
-        //}
-
-        //public void AtribuirDisciplinaAProfessor()
-        //{
-
-        //    int numProfessor = 0;
-        //    int numDisciplina = 0;
-
-        //    if (Professores.Count == 0)
-        //    {
-        //        Console.WriteLine("Não há professores cadastrados");
-        //    }
-        //    else
-        //    {
-        //        Console.WriteLine("Professores disponíveis para atribuição:");
-        //        for (int i = 0; i < Professores.Count; i++)
-        //        {
-        //            Console.WriteLine($"{i + 1}. {Professores[i].Nome}");
-        //            Console.Write("Selecione o número do professor: ");
-        //            numProfessor = int.Parse(Console.ReadLine()) - 1;
-        //        }
-
-        //    }
-
-        //    if (Disciplinas.Count == 0)
-        //    {
-        //        Console.WriteLine("Não há disciplinas cadastradas");
-        //    }
-        //    else
-        //    {
-        //        Console.WriteLine("Disciplinas disponíveis para atribuição:");
-        //        for (int i = 0; i < Disciplinas.Count; i++)
-        //        {
-        //            Console.WriteLine($"{i + 1}. {Disciplinas[i].Titulo}");
-        //        }
-        //        Console.Write("Selecione o número da disciplina: ");
-        //        numDisciplina = int.Parse(Console.ReadLine()) - 1;
-        //    }
-
-        //    if (Professores.Count > 0 && Disciplinas.Count > 0)
-        //    {
-        //        Professores[numProfessor].AlocarDisciplina(Disciplinas[numDisciplina]);
-        //        Console.WriteLine($"Disciplina {Disciplinas[numDisciplina].Titulo} alocada para o professor {Professores[numProfessor].Nome}.");
-        //    }
-
-
-        //}
-
-        //public void ListarAlunos()
-        //{
-
-        //}
-
-        //public void ListarProfessores()
-        //{
-        //    Console.WriteLine("Lista de Professores:");
-        //    foreach (var professor in Professores)
-        //    {
-        //        professor.ExibirDados();
-        //    }
-        //}
-
-        //public void ListarCursos()
-        //{
-        //    // Esse método mostre alguns cursos, porém não existe as disciplinas associadas a ele. Talvez seja interessante implementar isso.
-        //    Console.WriteLine("Lista de Cursos:");
-        //    foreach (var curso in Cursos)
-        //    {
-        //        Console.WriteLine($"Nome: {curso.Nome}, Código: {curso.CodigoCurso}");
-        //    }
-        //}
-
-        //public void ListarDisciplinas()
-        //{
-
-        //}
-
-
+        public string AtribuirDisciplina()
+        {
+            char cOpcao = ' ';
+            Professor professorSelecionado;
+            Disciplina disciplinaSelecionada;
+            Console.WriteLine("\nAtribuir Disciplina A Um Professor");
+            Console.WriteLine("Matricula Do Professor:");
+            Console.WriteLine("Nome: ");
+            Console.WriteLine("Codigo Da Disciplina:");
+            Console.WriteLine("Nome: ");
+        labelNovaAtribuicao:
+            Console.SetCursorPosition(25,3);
+            try
+            {
+                professorSelecionado = Professores.Find(x => x.matriculaProfessor == int.Parse(Console.ReadLine()));
+            }
+            catch (Exception ex)
+            {
+                goto labelNovaAtribuicao;
+            }
+            Console.SetCursorPosition(5,4);
+            Console.WriteLine(professorSelecionado.Nome);
+            Console.SetCursorPosition(22,5);
+            try {
+                disciplinaSelecionada = Disciplinas.Find(x => x.CodigoDisciplina == int.Parse(Console.ReadLine()));
+            }
+            catch (Exception ex)
+            {
+                goto labelNovaAtribuicao;
+            }
+            Console.SetCursorPosition(5, 6);
+            Console.WriteLine(disciplinaSelecionada.Nome);
+            Console.WriteLine("\n\nConfirma: \nS - Sim\nN - Não\nC - Cancelar");
+        labelConfirmaOpcao:
+            Console.SetCursorPosition(10, 9);
+            cOpcao = char.ToUpper(Console.ReadKey().KeyChar);
+            if (cOpcao == 'S')
+            {
+                if (!professorSelecionado.Disciplinas.Contains(disciplinaSelecionada))
+                {
+                    Professores.Find(x => x.matriculaProfessor == professorSelecionado.matriculaProfessor).AlocarDisciplina(disciplinaSelecionada);
+                }
+                else
+                {
+                    return "Aluno Ja Matriculado Neste Curso";
+                }
+            }
+            else if (cOpcao == 'N')
+            {
+                Console.SetCursorPosition(25,3);
+                Console.WriteLine("     ");
+                Console.SetCursorPosition(5, 4);
+                Console.WriteLine("                                                                                ");
+                Console.SetCursorPosition(22, 5);
+                Console.WriteLine("     ");
+                Console.SetCursorPosition(5, 6);
+                Console.WriteLine("                                                                                ");
+                goto labelNovaAtribuicao;
+            }
+            else if (cOpcao == 'C')
+            {
+                return "Atribuicao Cancelada";
+            }
+            else
+            {
+                Console.SetCursorPosition(13, 9);
+                Console.WriteLine("<Opcao Invalida>");
+                goto labelConfirmaOpcao;
+            }
+            return "Disciplina Atribuida Ao Professor Com Sucesso";
+        }
+        public string AdicionarDisciplina()
+        {
+            return "Disciplina Adicionada Ao Curso com Sucesso";
+        }
     }
 }
 

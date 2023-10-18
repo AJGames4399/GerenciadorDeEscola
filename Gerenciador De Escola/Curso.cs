@@ -11,9 +11,9 @@ namespace Gerenciador_De_Escola
         public List<Aluno> Alunos { get; set; }
         public List<Disciplina> Disciplinas { get; set; }
 
-        public Curso(string nome)
+        public Curso(int codigo, string nome)
         {
-            CodigoCurso = new Random().Next(1,999);
+            CodigoCurso = codigo;
             Nome = nome;
             Alunos = new List<Aluno>();
             Disciplinas = new List<Disciplina>();
@@ -21,22 +21,8 @@ namespace Gerenciador_De_Escola
 
         public void AdicionarAluno(Aluno aluno)
         {
-            if (!Alunos.Contains(aluno))
-            {
-                Alunos.Add(aluno);
-            }
-            else
-            {
-                Console.WriteLine("Aluno já matriculado neste curso");
-            }
+            Alunos.Add(aluno);
         }
-
-        /*
-
-        Essa classe não foi muito utilizada em alguns recursos que estão na classe gerenciar escola, talvez possam ser incorporados aqui.
-        Respostas: Classes foram retiradas do GerenciadorEscoal e colocadas aqui
-
-        */
 
         public void AdicionarDisciplina(Disciplina disciplina)
         {
@@ -66,15 +52,16 @@ namespace Gerenciador_De_Escola
             string sMensagem = "Lista de Disciplinas:";
             foreach (var disciplina in Disciplinas)
             {
-                sMensagem += "\nTitulo: " + disciplina.Titulo;
+                sMensagem += "\nTitulo: " + disciplina.Nome;
                 sMensagem += "\nCarga Horaria: " + disciplina.CargaHoraria;
-                sMensagem += "\nEmenta: " + disciplina.Ementa;
+                sMensagem += "\nEmenta: " + disciplina.Ementa+"\n";
             }
             return sMensagem;
         }
 
-
-
-
+        public string ExibirDados()
+        {
+            return CodigoCurso + ": "+Nome+"\n"+ListarDisciplinas();
+        }
     }
 }
